@@ -5,7 +5,7 @@ out.ogg: out.wav
 	oggenc out.wav
 
 out.raw: synth.py
-	python synth.py
+	python3 synth.py
 
 clean:
 	rm -f out.raw out.wav out.ogg
