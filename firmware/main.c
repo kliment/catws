@@ -241,7 +241,7 @@ void hiss(){
     PORTD|=_BV(PD5);
 }
 
-void sleep_mode()
+void sleep()
 {
     static uint8_t wdt_timerflag=0;
         
@@ -308,7 +308,7 @@ int main(void){
     
     hiss();
     while(1){
-        sleep_mode();
+        sleep();
         uint8_t mode=pm_sleep;
         while (!(ADCSRA&_BV(ADIF)));
         CLKPR=_BV(CLKPCE);
