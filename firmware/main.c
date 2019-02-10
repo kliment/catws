@@ -258,7 +258,7 @@ int main(void){
         __asm("wdr");
         MCUSR &= ~(1<<WDRF);
         WDTCSR |= (1<<WDCE) | (1<<WDE);//enable changes to watchdog config
-        WDTCSR = (1<<WDIE) | (1<<WDP1)| (1<<WDP0);//configure watchdog interrupt after 1/8th of a second
+        WDTCSR = (1<<WDIE) | (1<<WDP2);//configure watchdog interrupt after 1/4th of a second
         sei();
         
         set_sleep_mode(SLEEP_MODE_PWR_DOWN);
@@ -275,23 +275,21 @@ int main(void){
         CLKPR=_BV(CLKPCE);
         CLKPR=0;
         for(uint8_t i=0;i<5;i++){
-            DDRD=_BV(i);
             res=touch_sense(i);
             if(res==tt_off){
                 PORTD|=_BV(i);
             }else if(res==tt_on){
                 PORTD&=~(_BV(i));
                 wkup_needed=1;
-                //new_vol += 50;
             }
         }
         
         if(wkup_needed){
             wkup_needed=0;
             PRR &=~_BV(PRTIM1);
-            for(int j=0;j<2500;j++){
+            for(int j=0;j<750;j++){
                 for(uint8_t i=0;i<5;i++){
-                    DDRD=_BV(i);
+                    DDRD|=_BV(i);
                     res=touch_sense(i);
                     if(res==tt_off){
                         PORTD|=_BV(i);
@@ -300,6 +298,10 @@ int main(void){
                         j=0;
                         if(vol<250)
                             vol += 50;
+                        PORTD&=~_BV(PD6);
+                        PORTD&=~_BV(PD5);
+                        PORTD&=~_BV(PD7);
+    
                     }
                 }
                 set_sleep_mode(SLEEP_MODE_IDLE);
