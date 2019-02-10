@@ -1,6 +1,6 @@
 
 CC=avr-gcc
-CFLAGS=-mmcu=attiny88 -Os -std=c11
+CFLAGS=-mmcu=attiny88 -Os -std=c11 -g
 
 
 build: main.c
