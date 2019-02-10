@@ -355,14 +355,14 @@ int main(void){
                             PORTD&=~_BV(PD7);
                             
 
-                            switch(i) {
-                                case 0: // belly. Bad unless with grain.
+                            switch(pm_belly + i) {
+                                case pm_belly: // Bad unless with grain.
                                     if(mode != pm_butt) {
                                         happiness -= 10;
                                     }
                                     mode = pm_belly;
                                     break;
-                                case 1: // Butt. Good with grain, very bad against grain.
+                                case pm_butt: // Good with grain, very bad against grain.
                                     if(mode==pm_back){
                                         happiness+=5;
                                     }else if(mode == pm_belly){
@@ -372,23 +372,36 @@ int main(void){
                                     }
                                     mode=pm_butt;
                                     break;
-                                case 2: // Back. Good unless against grain.
-                                case 3: // Neck. Same.
-                                case 4: // Head. Same.
-                                    {
-                                    uint8_t against_grain = i + 1;
-                                    if(against_grain > 4) {
-                                        against_grain = 0;
+                                case pm_back: // Back. Good unless against grain.
+                                case pm_neck: // Neck. Same.
+                                {
+                                    uint8_t with_grain = pm_belly + i - 1;
+                                    if(with_grain < pm_belly) {
+                                        with_grain = pm_head;
                                     }
-                                    against_grain = pm_belly - against_grain;
-                                    if(mode != against_grain) {
+                                    if(mode == with_grain) {
+                                        happiness += 5;
+                                    } else {
+                                        uint8_t against_grain = pm_belly + i + 1;
+                                        if(against_grain > pm_head) {
+                                            against_grain = pm_belly;
+                                        }
+                                        if(mode == against_grain) {
+                                            happiness -= 20;
+                                        }
+                                    }
+                                    break;
+                                }
+                                case pm_head: // Head. Same.
+                                {
+                                    if(mode != pm_neck) {
                                         happiness += 1;
                                     } else {
                                         happiness -= 5;
                                     }
                                     mode = pm_belly - i;
                                     break;
-                                    }
+                                }
                             }
                         }
                     }
