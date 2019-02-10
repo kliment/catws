@@ -372,7 +372,7 @@ int main(void){
             if(happiness<0){
                 hiss();
             }else{
-                for(int j=0;j<5*happiness;j++){
+                for(int j=0;j<(happiness>>1);j++){
                     for(uint8_t i=0;i<5;i++){
                         DDRD|=_BV(i);
                         res=touch_sense(i);
@@ -451,7 +451,7 @@ int main(void){
                     } else {
                         vol=255;
                     }
-                    _delay_ms(9);
+                    _delay_ms(4);
                     set_sleep_mode(SLEEP_MODE_IDLE);
                     sleep_enable();
                     sleep_cpu();
