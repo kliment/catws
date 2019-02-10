@@ -265,23 +265,8 @@ int main(void){
         for(uint8_t j=0;j<5;j++)
             touch_sense(j);
     }
-    for(uint8_t purrs=0;purrs<1;purrs++){
-        for(uint8_t i=0;i<20;i++){
-            PORTB|=_BV(PB1);
-            _delay_ms(25);
-            PORTB&=~_BV(PB1);
-            _delay_ms(25);
-        }
-        for(uint8_t i=0;i<25;i++){
-            PORTB|=_BV(PB1);
-            _delay_ms(20);
-            PORTB&=~_BV(PB1);
-            _delay_ms(20);
-        }
-    }
     
     audio_init();
-    hiss();
     uint8_t wdt_timerflag=0;
     while(1){
         //sleep mode
@@ -289,7 +274,6 @@ int main(void){
         PORTD=0xff; //turn off all LEDs
         cli(); //disable interrupts
         OCR1A=0;//disable sound output;
-        PORTB&=~_BV(PB1);//power down piezo
         ADCSRA &=~_BV(ADEN);//disable ADC
         PRR=(_BV(PRADC)|_BV(PRTWI)|_BV(PRTIM1)|_BV(PRTIM0)|_BV(PRSPI));//disable everything else
         if(wdt_timerflag){
