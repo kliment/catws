@@ -405,7 +405,7 @@ int main(void){
                     if(happiness>125) {
                         happiness=0; //too much stimulation
                     }
-                    if(happiness < 0){
+                    if(happiness <= 0){
                         hiss();
                         break;
                     }
