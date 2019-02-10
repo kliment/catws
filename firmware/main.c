@@ -402,19 +402,17 @@ int main(void){
                             break;
                         }
                     }
-                    if(happiness>125) {
+                    if(happiness>=256) {
                         happiness=0; //too much stimulation
                     }
                     if(happiness <= 0){
                         hiss();
                         break;
+                    } else if(happiness < 128) {
+                        vol=happiness<<1;
+                    } else {
+                        vol=255;
                     }
-                    vol=happiness<<1;
-                    //if(vol==0) {
-                    //    audio_stop();
-                    //} else {
-                    //    audio_start();
-                    //}
                     _delay_ms(9);
                     set_sleep_mode(SLEEP_MODE_IDLE);
                     sleep_enable();
