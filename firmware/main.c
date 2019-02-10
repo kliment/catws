@@ -14,7 +14,7 @@
 //#define SENSEMODE_TIME 1
 
 enum {tt_off=0,tt_on,tt_push,tt_release,tt_timeout};
-enum {pm_sleep=0, pm_wakeidle, pm_head, pm_neck, pm_back, pm_butt, pm_belly};
+enum {pm_sleep=0, pm_wakeidle, pm_belly, pm_butt, pm_back, pm_neck, pm_head};
 #define touch_threshold_on 1
 #define touch_threshold_off 1
 #define touch_timeout 255
@@ -240,6 +240,41 @@ void hiss(){
     PORTD|=_BV(PD5);
 }
 
+void sleep_mode()
+{
+    static uint8_t wdt_timerflag=0;
+        
+    audio_stop();
+    PORTD=0xff; //turn off all LEDs
+    cli(); //disable interrupts
+    ADCSRA &=~_BV(ADEN);//disable ADC
+    PRR=(_BV(PRADC)|_BV(PRTWI)|_BV(PRTIM1)|_BV(PRTIM0)|_BV(PRSPI));//disable everything else
+    if(wdt_timerflag){
+        __asm("wdr");
+        MCUSR &= ~(1<<WDRF);
+        WDTCSR |= (1<<WDCE) | (1<<WDE);//enable changes to watchdog config
+        WDTCSR = (1<<WDIE) | (1<<WDP0) | (1<<WDP1);//configure watchdog interrupt after 1/8th of a second
+        wdt_timerflag=0;
+    }else{
+        __asm("wdr");
+        MCUSR &= ~(1<<WDRF);
+        WDTCSR |= (1<<WDCE) | (1<<WDE);//enable changes to watchdog config
+        WDTCSR = (1<<WDIE) | (1<<WDP2);//configure watchdog interrupt after 1/4th of a second
+        wdt_timerflag=1;
+    }            
+    sei();
+    
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
+    MCUCR=(1<<BODSE)|(1<<BODS);
+    MCUCR=(1<<BODS);
+    sleep_cpu();
+
+    PRR &=~_BV(PRADC);
+    ADCSRA =_BV(ADEN);//|_BV(ADPS0)|_BV(ADPS1);
+    ADCSRA |=_BV(ADSC); // Wake up ADC by doing a conversion
+}
+
 int main(void){
 #ifndef SENSEMODE_TIME
     PRR &=~_BV(PRADC);
@@ -268,41 +303,9 @@ int main(void){
     }
     
     audio_init();
-    audio_start();
     hiss();
-    uint8_t wdt_timerflag=0;
     while(1){
-        //sleep mode
-        vol=0;
-        PORTD=0xff; //turn off all LEDs
-        cli(); //disable interrupts
-        OCR1A=0;//disable sound output;
-        ADCSRA &=~_BV(ADEN);//disable ADC
-        PRR=(_BV(PRADC)|_BV(PRTWI)|_BV(PRTIM1)|_BV(PRTIM0)|_BV(PRSPI));//disable everything else
-        if(wdt_timerflag){
-            __asm("wdr");
-            MCUSR &= ~(1<<WDRF);
-            WDTCSR |= (1<<WDCE) | (1<<WDE);//enable changes to watchdog config
-            WDTCSR = (1<<WDIE) | (1<<WDP0) | (1<<WDP1);//configure watchdog interrupt after 1/8th of a second
-            wdt_timerflag=0;
-        }else{
-            __asm("wdr");
-            MCUSR &= ~(1<<WDRF);
-            WDTCSR |= (1<<WDCE) | (1<<WDE);//enable changes to watchdog config
-            WDTCSR = (1<<WDIE) | (1<<WDP2);//configure watchdog interrupt after 1/4th of a second
-            wdt_timerflag=1;
-        }            
-        sei();
-        
-        set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-        sleep_enable();
-        MCUCR=(1<<BODSE)|(1<<BODS);
-        MCUCR=(1<<BODS);
-        sleep_cpu();
-        
-        PRR &=~_BV(PRADC);
-        ADCSRA =_BV(ADEN);//|_BV(ADPS0)|_BV(ADPS1);
-        ADCSRA |=_BV(ADSC); // Wake up ADC by doing a conversion
+        sleep_mode();
         uint8_t mode=pm_sleep;
         while (!(ADCSRA&_BV(ADIF)));
         CLKPR=_BV(CLKPCE);
@@ -314,26 +317,17 @@ int main(void){
                 PORTD|=_BV(i);
             }else if(res==tt_on){
                 PORTD&=~(_BV(i));
-                mode=pm_wakeidle;
-                if(i==0){//belly touched
+                mode=pm_belly + i;
+                switch(pm_belly + i) {
+                case pm_belly:
                     happiness=-1;
-                    mode=pm_belly;
-                }
-                if(i==4){//head touched
+                    break;
+                case pm_head:
                     happiness=16;
-                    mode=pm_head;
-                }
-                if(i==3){//neck touched
+                    break;
+                default:
                     happiness=8;
-                    mode=pm_neck;
-                }
-                if(i==2){//back touched
-                    happiness=8;
-                    mode=pm_back;
-                }
-                if(i==1){//butt touched
-                    happiness=8;
-                    mode=pm_butt;
+                    break;
                 }
                 break;
             }
