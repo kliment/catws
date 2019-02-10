@@ -14,7 +14,7 @@
 //#define SENSEMODE_TIME 1
 
 enum {tt_off=0,tt_on,tt_push,tt_release,tt_timeout};
-enum {pm_sleep=0, pm_wakeidle, pm_0, pm_1, pm_2, pm_3, pm_4};
+enum {pm_sleep=0, pm_wakeidle, pm_head, pm_neck, pm_back, pm_butt, pm_belly};
 #define touch_threshold_on 1
 #define touch_threshold_off 1
 #define touch_timeout 255
@@ -164,41 +164,59 @@ void audio_init(void){
     /* Toggle OC1A on compare match. */
     TCCR1A |= _BV(COM1A1);
 
-    /* Prescaler 1 */
-    TCCR1B |= _BV(CS10);
-
-    /* No output for now */
-    OCR1A = 0;
-
     /* Overflow interrupt enabled */
     TIMSK1 = _BV(TOIE1);
 }
 
 #define WAVE_LOG2 8
 
-uint8_t purr[] = {0x50,0x38,0x19,0xf7,0xd4,0xb4,0x9a,0x89,0x80,0x81,0x88,0x95,0xa4,0xb4,0xc2,0xcd,0xd5,0xda,0xdd,0xde,0xdd,0xde,0xde,0xe0,0xe4,0xe8,0xed,0xf2,0xf7,0xfb,0xff,0x02,0x04,0x06,0x08,0x0a,0x0b,0x0d,0x0f,0x12,0x14,0x17,0x1b,0x1e,0x21,0x24,0x27,0x2a,0x2d,0x2f,0x31,0x33,0x35,0x37,0x38,0x3a,0x3c,0x3d,0x3f,0x41,0x42,0x44,0x45,0x46,0x47,0x48,0x49,0x4a,0x4a,0x4a,0x4b,0x4b,0x4b,0x4c,0x4d,0x4e,0x4e,0x4f,0x50,0x51,0x51,0x52,0x52,0x52,0x53,0x53,0x54,0x55,0x55,0x56,0x57,0x57,0x58,0x59,0x5a,0x5c,0x5d,0x5e,0x5f,0x60,0x61,0x61,0x62,0x62,0x63,0x63,0x63,0x64,0x64,0x64,0x65,0x65,0x66,0x67,0x68,0x6a,0x6b,0x6c,0x6d,0x6e,0x6f,0x6f,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x71,0x71,0x71,0x72,0x72,0x72,0x72,0x72,0x72,0x73,0x73,0x74,0x74,0x75,0x76,0x78,0x79,0x7a,0x7b,0x7b,0x7c,0x7c,0x7d,0x7d,0x7e,0x7e,0x7e,0x7e,0x7f,0x7e,0x7e,0x7e,0x7d,0x7c,0x7c,0x7b,0x7a,0x7a,0x79,0x79,0x79,0x79,0x7a,0x7a,0x7a,0x7a,0x7a,0x7a,0x7a,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x78,0x78,0x78,0x78,0x78,0x78,0x77,0x78,0x78,0x78,0x78,0x79,0x79,0x7a,0x7b,0x7b,0x7c,0x7d,0x7e,0x7e,0x7e,0x7e,0x7e,0x7d,0x7d,0x7c,0x7c,0x7c,0x7b,0x7b,0x7b,0x7b,0x7c,0x7c,0x7b,0x7b,0x7b,0x7a,0x7a,0x79,0x79,0x79,0x78,0x79,0x79,0x79,0x79,0x79,0x76,0x6f,0x62};
+int8_t purr[1<<WAVE_LOG2] = {0x02,0x04,0x06,0x08,0x0a,0x0b,0x0d,0x0f,0x12,0x14,0x17,0x1b,0x1e,0x21,0x24,0x27,0x2a,0x2d,0x2f,0x31,0x33,0x35,0x37,0x38,0x3a,0x3c,0x3d,0x3f,0x41,0x42,0x44,0x45,0x46,0x47,0x48,0x49,0x4a,0x4a,0x4a,0x4b,0x4b,0x4b,0x4c,0x4d,0x4e,0x4e,0x4f,0x50,0x51,0x51,0x52,0x52,0x52,0x53,0x53,0x54,0x55,0x55,0x56,0x57,0x57,0x58,0x59,0x5a,0x5c,0x5d,0x5e,0x5f,0x60,0x61,0x61,0x62,0x62,0x63,0x63,0x63,0x64,0x64,0x64,0x65,0x65,0x66,0x67,0x68,0x6a,0x6b,0x6c,0x6d,0x6e,0x6f,0x6f,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x70,0x71,0x71,0x71,0x72,0x72,0x72,0x72,0x72,0x72,0x73,0x73,0x74,0x74,0x75,0x76,0x78,0x79,0x7a,0x7b,0x7b,0x7c,0x7c,0x7d,0x7d,0x7e,0x7e,0x7e,0x7e,0x7f,0x7e,0x7e,0x7e,0x7d,0x7c,0x7c,0x7b,0x7a,0x7a,0x79,0x79,0x79,0x79,0x7a,0x7a,0x7a,0x7a,0x7a,0x7a,0x7a,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x79,0x78,0x78,0x78,0x78,0x78,0x78,0x77,0x78,0x78,0x78,0x78,0x79,0x79,0x7a,0x7b,0x7b,0x7c,0x7d,0x7e,0x7e,0x7e,0x7e,0x7e,0x7d,0x7d,0x7c,0x7c,0x7c,0x7b,0x7b,0x7b,0x7b,0x7c,0x7c,0x7b,0x7b,0x7b,0x7a,0x7a,0x79,0x79,0x79,0x78,0x79,0x79,0x79,0x79,0x79,0x76,0x6f,0x62,0x50,0x38,0x19,0xf7,0xd4,0xb4,0x9a,0x89,0x80,0x81,0x88,0x95,0xa4,0xb4,0xc2,0xcd,0xd5,0xda,0xdd,0xde,0xdd,0xde,0xde,0xe0,0xe4,0xe8,0xed,0xf2,0xf7,0xfb,0xff};
 
 static uint16_t phase = 0;
 static uint16_t increment = (((uint32_t)1)<<16) * 30. / F_TIM_ISR;
 static uint8_t vol = 0;
+static uint8_t used_vol = 0;
 volatile uint16_t hissing=0;
 volatile uint16_t lfsr = 0xACE1u;
 volatile uint16_t bit=0;
     
+void audio_start(void) {
+    /* Prescaler 1 */
+    TCCR1B |= _BV(CS10);
+    
+    /* Interrupt enabled */
+    TIMSK1 = _BV(TOIE1);
+}
+void audio_stop(void){ 
+    /* Interrupt disabled */
+    TIMSK1 &= ~_BV(TOIE1);
+    /* Prescaler 0 -> no clock */
+    TCCR1B &= ~_BV(CS10);
+
+    TCNT1 = 0;
+    phase = 0;
+    OCR1A = 0;
+}
 ISR(TIMER1_OVF_vect) {
-    int16_t val;
+    int16_t val16;
+    uint8_t val8;
     if(hissing){
         bit = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5));
         lfsr = (lfsr >> 1) | (bit << 15);
-        val=lfsr&0xff;
+        val8=lfsr&0xff;
         hissing--;
     }else{
         phase += increment;
-        val = purr[phase>>(16-WAVE_LOG2)];
+        if(phase < increment) {
+            if(vol > used_vol) used_vol++;
+            if(vol < used_vol) used_vol--;
+        }
+        val16 = purr[phase>>(16-WAVE_LOG2)];
+        val16 *= used_vol;
+        val8 = val16 >> 8;
+        val8 ^= 0x80;
     }
-    val *= vol;
-    OCR1A = (val >> 8) ^ 0x80;
-    //OCR1A = (phase & 0x8000) ? 100 : 0;// use this for square wave output
+    OCR1AL = val8;
 }
 
 ISR(WDT_vect) {
@@ -247,23 +265,8 @@ int main(void){
         for(uint8_t j=0;j<5;j++)
             touch_sense(j);
     }
-    for(uint8_t purrs=0;purrs<1;purrs++){
-        for(uint8_t i=0;i<20;i++){
-            PORTB|=_BV(PB1);
-            _delay_ms(25);
-            PORTB&=~_BV(PB1);
-            _delay_ms(25);
-        }
-        for(uint8_t i=0;i<25;i++){
-            PORTB|=_BV(PB1);
-            _delay_ms(20);
-            PORTB&=~_BV(PB1);
-            _delay_ms(20);
-        }
-    }
     
     audio_init();
-    hiss();
     uint8_t wdt_timerflag=0;
     while(1){
         //sleep mode
@@ -271,7 +274,6 @@ int main(void){
         PORTD=0xff; //turn off all LEDs
         cli(); //disable interrupts
         OCR1A=0;//disable sound output;
-        PORTB&=~_BV(PB1);//power down piezo
         ADCSRA &=~_BV(ADEN);//disable ADC
         PRR=(_BV(PRADC)|_BV(PRTWI)|_BV(PRTIM1)|_BV(PRTIM0)|_BV(PRSPI));//disable everything else
         if(wdt_timerflag){
@@ -312,23 +314,23 @@ int main(void){
                 mode=pm_wakeidle;
                 if(i==0){//belly touched
                     happiness=-1;
-                    mode=pm_4;
+                    mode=pm_belly;
                 }
                 if(i==4){//head touched
                     happiness=16;
-                    mode=pm_0;
+                    mode=pm_head;
                 }
                 if(i==3){//neck touched
                     happiness=8;
-                    mode=pm_1;
+                    mode=pm_neck;
                 }
                 if(i==2){//back touched
                     happiness=8;
-                    mode=pm_2;
+                    mode=pm_back;
                 }
                 if(i==1){//butt touched
                     happiness=8;
-                    mode=pm_3;
+                    mode=pm_butt;
                 }
                 break;
             }
@@ -340,7 +342,7 @@ int main(void){
             if(happiness<0){
                 hiss();
             }else{
-                for(int j=0;j<(int16_t)(5*(int16_t)happiness);j++){
+                for(int j=0;j<5*happiness;j++){
                     for(uint8_t i=0;i<5;i++){
                         DDRD|=_BV(i);
                         res=touch_sense(i);
@@ -354,61 +356,64 @@ int main(void){
                             PORTD&=~_BV(PD6);
                             PORTD&=~_BV(PD5);
                             PORTD&=~_BV(PD7);
-                            if(i==0){
-                                if(mode!=pm_3){
-                                    happiness-=10;
-                                }
-                                mode=pm_4;
-                            } else if(i==4){
-                                //head touched - good stuff unless against the grain
-                                if(mode!=pm_1){
-                                    happiness+=1;
-                                }else{
-                                    happiness-=5;
-                                }
-                                mode=pm_0;
-                            } else if(i==3){
-                                //neck touched - good with grain, bad against grain
-                                if(mode==pm_0){
-                                    happiness+=5;
-                                }else if(mode == pm_2){
-                                    happiness-=20;
-                                }
-                                mode=pm_1;
-                            } else if(i==2){
-                                //back touched - good with grain, bad against grain
-                                if(mode==pm_1){
-                                    happiness+=5;
-                                }else if(mode == pm_3){
-                                    happiness-=20;
-                                }
-                                mode=pm_2;
-                            } else if(i==1){
-                                //butt touched - good with grain, very bad against grain
-                                if(mode==pm_2){
-                                    happiness+=5;
-                                }else if(mode == pm_4){
-                                    happiness-=20;
-                                }else if(mode !=pm_3){
-                                    happiness -=4;
-                                }
-                                mode=pm_3;
-                            }
                             
+
+                            switch(i) {
+                                case 0: // belly. Bad unless with grain.
+                                    if(mode != pm_butt) {
+                                        happiness -= 10;
+                                    }
+                                    mode = pm_belly;
+                                    break;
+                                case 1: // Butt. Good with grain, very bad against grain.
+                                    if(mode==pm_back){
+                                        happiness+=5;
+                                    }else if(mode == pm_belly){
+                                        happiness-=20;
+                                    }else if(mode !=pm_butt){
+                                        happiness -=4;
+                                    }
+                                    mode=pm_butt;
+                                    break;
+                                case 2: // Back. Good unless against grain.
+                                case 3: // Neck. Same.
+                                case 4: // Head. Same.
+                                    {
+                                    uint8_t against_grain = i + 1;
+                                    if(against_grain > 4) {
+                                        against_grain = 0;
+                                    }
+                                    against_grain = pm_belly - against_grain;
+                                    if(mode != against_grain) {
+                                        happiness += 1;
+                                    } else {
+                                        happiness -= 5;
+                                    }
+                                    mode = pm_belly - i;
+                                    break;
+                                    }
+                            }
                         }
                     }
-                    if(happiness>250)happiness=0; //too much stimulation
-                    if(happiness<=0){
+                    if(happiness < 0){
                         hiss();
                         break;
+                    } else if(happiness&0x100) {
+                        happiness=0; //too much stimulation
                     }
                     vol=happiness;
+                    if(vol==0) {
+                        audio_stop();
+                    } else {
+                        audio_start();
+                    }
                     _delay_ms(9);
                     set_sleep_mode(SLEEP_MODE_IDLE);
                     sleep_enable();
                     sleep_cpu();
                 }
             }
+            audio_stop();
             mode=pm_sleep;
         }
     }
