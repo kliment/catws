@@ -269,7 +269,6 @@ int main(void){
     }
     
     audio_init();
-    audio_start();
     
     hiss();
     uint8_t wdt_timerflag=0;
@@ -344,6 +343,7 @@ int main(void){
             
             //purr/hiss state machine
             PRR &=~_BV(PRTIM1);
+            audio_start();
             if(happiness<0){
                 hiss();
             }else{
@@ -358,8 +358,7 @@ int main(void){
                             PORTD&=~_BV(PD6);
                             PORTD&=~_BV(PD5);
                             PORTD&=~_BV(PD7);
-                            
-
+                            j=0;
                             switch(i) {
                                 case 0: // belly. Bad unless with grain.
                                     if(mode != pm_butt) {
@@ -377,38 +376,51 @@ int main(void){
                                     }
                                     mode=pm_butt;
                                     break;
-                                case 2: // Back. Good unless against grain.
-                                case 3: // Neck. Same.
-                                case 4: // Head. Same.
-                                    {
-                                    uint8_t against_grain = i + 1;
-                                    if(against_grain > 4) {
-                                        against_grain = 0;
+                                case 2: // Back. Good with grain, bad against grain.
+                                    if(mode==pm_neck){
+                                        happiness+=5;
                                     }
-                                    against_grain = pm_belly - against_grain;
-                                    if(mode != against_grain) {
-                                        happiness += 1;
-                                    } else {
-                                        happiness -= 5;
+                                    else if(mode==pm_butt){
+                                        happiness-=20;
+                                    }else{
+                                        happiness+=1;
                                     }
-                                    mode = pm_belly - i;
+                                    mode=pm_back;
                                     break;
+                                case 3: // Neck. Same.
+                                    if(mode==pm_head){
+                                        happiness+=5;
                                     }
+                                    else if(mode==pm_back){
+                                        happiness-=20;
+                                    }else{
+                                        happiness+=1;
+                                    }
+                                    mode=pm_neck;
+                                    break;
+                                case 4: // Head. Same.
+                                    if(mode==pm_head){
+                                        happiness+=1;
+                                    }else if(mode==pm_neck){
+                                        happiness-=5;
+                                    }
+                                    break;
                             }
+                            break;
                         }
                     }
                     if(happiness < 0){
                         hiss();
                         break;
-                    } else if(happiness>250) {
+                    } else if(happiness>125) {
                         happiness=0; //too much stimulation
                     }
-                    vol=happiness;
-                    if(vol==0) {
-                        audio_stop();
-                    } else {
-                        audio_start();
-                    }
+                    vol=happiness<<1;
+                    //if(vol==0) {
+                    //    audio_stop();
+                    //} else {
+                    //    audio_start();
+                    //}
                     _delay_ms(9);
                     set_sleep_mode(SLEEP_MODE_IDLE);
                     sleep_enable();
