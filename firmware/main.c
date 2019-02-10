@@ -434,7 +434,7 @@ int main(void){
                                     break;
                             }
                             mode=new_mode;
-                            if(test_hiss && j > happiness>>1) {
+                            if(test_hiss && j > (happiness>>1)) {
                                 happiness=0; // hiss
                             }
                             break;
