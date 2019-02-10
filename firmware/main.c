@@ -227,11 +227,12 @@ ISR(WDT_vect) {
 
 
 void hiss(){
-    audio_start();
+    audio_stop();
     PORTD|=_BV(PD6);
     PORTD|=_BV(PD7);
     PORTD&=~_BV(PD5);
     _delay_ms(90);
+    audio_start();
     hissing=20000;
     vol=250;
     used_vol=250;
@@ -303,6 +304,8 @@ int main(void){
     }
     
     audio_init();
+    audio_start();
+    
     hiss();
     while(1){
         sleep_mode();
@@ -347,9 +350,6 @@ int main(void){
                             PORTD|=_BV(i);
                         }else if(res==tt_on){
                             PORTD&=~(_BV(i));
-                            j=0;
-                            if(vol<250)
-                                vol += 50;
                             PORTD&=~_BV(PD6);
                             PORTD&=~_BV(PD5);
                             PORTD&=~_BV(PD7);
@@ -395,7 +395,7 @@ int main(void){
                     if(happiness < 0){
                         hiss();
                         break;
-                    } else if(happiness&0x100) {
+                    } else if(happiness>250) {
                         happiness=0; //too much stimulation
                     }
                     vol=happiness;
