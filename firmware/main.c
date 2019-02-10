@@ -200,6 +200,7 @@ void audio_stop(void){
 ISR(TIMER1_OVF_vect) {
     int16_t val16;
     uint8_t val8;
+    static uint8_t final_vol = 0;
     if(hissing){
         bit = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5));
         lfsr = (lfsr >> 1) | (bit << 15);
@@ -207,12 +208,28 @@ ISR(TIMER1_OVF_vect) {
         hissing--;
     }else{
         phase += increment;
-        if(phase < increment) {
+        if(phase < increment) { // overflow, we're at ~0 amplitude and can change volume
             if(vol > used_vol) used_vol++;
             if(vol < used_vol) used_vol--;
+
+#define MAX_PURRS 64
+#define PURR_FADE 4
+            purr_counter++;
+            if(purr_counter > MAX_PURRS) {
+                purr_counter = 0;
+                increment_index ^= 1;
+                increment = increments[increment_index];
+                final_vol = 0;
+            } else if(purr_counter <= (1<<PURR_FADE)) {
+                final_vol = (purr_counter * (uint16_t) used_vol) >> PURR_FADE;
+            } else if(purr_counter >= (MAX_PURRS - (1<<PURR_FADE))) {
+                final_vol = ((uint16_t)(MAX_PURRS-purr_counter) * (uint16_t) used_vol) >> PURR_FADE;
+            } else {
+                final_vol = used_vol;
+            }
         }
         val16 = purr[phase>>(16-WAVE_LOG2)];
-        val16 *= used_vol;
+        val16 *= final_vol;
         val8 = val16 >> 8;
         val8 ^= 0x80;
     }
