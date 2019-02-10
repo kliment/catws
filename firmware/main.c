@@ -227,12 +227,14 @@ ISR(WDT_vect) {
 
 
 void hiss(){
+    audio_start();
     PORTD|=_BV(PD6);
     PORTD|=_BV(PD7);
     PORTD&=~_BV(PD5);
     _delay_ms(90);
     hissing=20000;
     vol=250;
+    used_vol=250;
     while(hissing)_delay_ms(1);
     vol=0;
     PORTD|=_BV(PD5);
@@ -246,7 +248,6 @@ int main(void){
     touch_init();
     CLKPR=_BV(CLKPCE);
     CLKPR=0;
-    //audio_init();
     DDRD|=_BV(PD5); //output pin to output
     DDRD|=_BV(PD6); //output pin to output
     DDRD|=_BV(PD7); //output pin to output
@@ -267,6 +268,8 @@ int main(void){
     }
     
     audio_init();
+    audio_start();
+    hiss();
     uint8_t wdt_timerflag=0;
     while(1){
         //sleep mode
