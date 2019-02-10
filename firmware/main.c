@@ -354,50 +354,58 @@ int main(void){
                             PORTD&=~_BV(PD5);
                             PORTD&=~_BV(PD7);
                             j=0;
-                            switch(i) {
-                                case 0: // belly. Bad unless with grain.
+                            uint8_t new_mode = pm_belly + i;
+                            uint8_t test_hiss = 0;
+                            switch(new_mode) {
+                                case pm_belly: // Bad unless with grain.
                                     if(mode != pm_butt) {
                                         happiness -= 10;
                                     }
                                     break;
-                                case 1: // Good with grain, very bad against grain.
+                                case pm_butt: // Good with grain, very bad against grain.
                                     if(mode==pm_back){
                                         happiness+=5;
                                     }else if(mode == pm_belly){
+                                        test_hiss = 1;
                                         happiness-=20;
                                     }else if(mode !=pm_butt){
                                         happiness -=4;
                                     }
                                     break;
-                                case 2: // Back. Good with grain, bad against grain.
+                                case pm_back: // Good with grain, bad against grain.
                                     if(mode==pm_neck){
                                         happiness+=5;
                                     }
                                     else if(mode==pm_butt){
+                                        test_hiss = 1;
                                         happiness-=20;
                                     }else{
                                         happiness+=1;
                                     }
-                                    mode=pm_back;
                                     break;
-                                case 3: // Neck. Same.
+                                case pm_neck: // Same.
                                     if(mode==pm_head){
                                         happiness+=5;
                                     }
                                     else if(mode==pm_back){
+                                        test_hiss = 1;
                                         happiness-=20;
                                     }else{
                                         happiness+=1;
                                     }
-                                    mode=pm_neck;
                                     break;
-                                case 4: // Head. Same.
+                                case pm_head: // Good while on head, bad against grain
                                     if(mode==pm_head){
                                         happiness+=1;
                                     }else if(mode==pm_neck){
+                                        test_hiss = 1;
                                         happiness-=5;
                                     }
                                     break;
+                            }
+                            mode=new_mode;
+                            if(test_hiss && j > 5*happiness) {
+                                happiness=0; // hiss
                             }
                             break;
                         }
