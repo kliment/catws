@@ -360,7 +360,6 @@ int main(void){
                                     if(mode != pm_butt) {
                                         happiness -= 10;
                                     }
-                                    mode = pm_belly;
                                     break;
                                 case pm_butt: // Good with grain, very bad against grain.
                                     if(mode==pm_back){
@@ -370,7 +369,6 @@ int main(void){
                                     }else if(mode !=pm_butt){
                                         happiness -=4;
                                     }
-                                    mode=pm_butt;
                                     break;
                                 case pm_back: // Back. Good unless against grain.
                                 case pm_neck: // Neck. Same.
@@ -399,10 +397,10 @@ int main(void){
                                     } else {
                                         happiness -= 5;
                                     }
-                                    mode = pm_belly - i;
                                     break;
                                 }
                             }
+                            mode = pm_belly + i;
                         }
                     }
                     if(happiness < 0){
