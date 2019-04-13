@@ -1,0 +1,586 @@
+EESchema Schematic File Version 4
+LIBS:power
+LIBS:74xx
+LIBS:catws-r2-cache
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L catws-rescue:C C1
+U 1 1 5C448EBC
+P 3450 2050
+F 0 "C1" H 3475 2150 50  0000 L CNN
+F 1 "C" H 3475 1950 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 3488 1900 50  0001 C CNN
+F 3 "" H 3450 2050 50  0001 C CNN
+	1    3450 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:C C2
+U 1 1 5C448F49
+P 3650 2050
+F 0 "C2" H 3675 2150 50  0000 L CNN
+F 1 "C" H 3675 1950 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0805" H 3688 1900 50  0001 C CNN
+F 3 "" H 3650 2050 50  0001 C CNN
+	1    3650 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:TEST_1P J1
+U 1 1 5C448FB3
+P 6500 2950
+F 0 "J1" H 6500 3220 50  0000 C CNN
+F 1 "TEST_1P" H 6500 3150 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 6700 2950 50  0001 C CNN
+F 3 "" H 6700 2950 50  0001 C CNN
+	1    6500 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:TEST_1P J2
+U 1 1 5C448FFA
+P 6650 2950
+F 0 "J2" H 6650 3220 50  0000 C CNN
+F 1 "TEST_1P" H 6650 3150 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 6850 2950 50  0001 C CNN
+F 3 "" H 6850 2950 50  0001 C CNN
+	1    6650 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:TEST_1P J3
+U 1 1 5C449019
+P 6800 2950
+F 0 "J3" H 6800 3220 50  0000 C CNN
+F 1 "TEST_1P" H 6800 3150 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 7000 2950 50  0001 C CNN
+F 3 "" H 7000 2950 50  0001 C CNN
+	1    6800 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:TEST_1P J4
+U 1 1 5C44903A
+P 6950 2950
+F 0 "J4" H 6950 3220 50  0000 C CNN
+F 1 "TEST_1P" H 6950 3150 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 7150 2950 50  0001 C CNN
+F 3 "" H 7150 2950 50  0001 C CNN
+	1    6950 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:TEST_1P J5
+U 1 1 5C44905D
+P 7100 2950
+F 0 "J5" H 7100 3220 50  0000 C CNN
+F 1 "TEST_1P" H 7100 3150 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 7300 2950 50  0001 C CNN
+F 3 "" H 7300 2950 50  0001 C CNN
+	1    7100 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:Speaker_Crystal LS1
+U 1 1 5C449916
+P 7000 1700
+F 0 "LS1" H 7025 1925 50  0000 R CNN
+F 1 "Speaker_Crystal" H 7025 1850 50  0000 R CNN
+F 2 "catwsparts:Murata-PKMCS" H 6965 1650 50  0001 C CNN
+F 3 "" H 6965 1650 50  0001 C CNN
+	1    7000 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR01
+U 1 1 5C449B6B
+P 4000 4600
+F 0 "#PWR01" H 4000 4350 50  0001 C CNN
+F 1 "GND" H 4000 4450 50  0000 C CNN
+F 2 "" H 4000 4600 50  0001 C CNN
+F 3 "" H 4000 4600 50  0001 C CNN
+	1    4000 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:Battery_Cell BT1
+U 1 1 5C449BC4
+P 3050 2100
+F 0 "BT1" H 3150 2200 50  0000 L CNN
+F 1 "Battery_Cell" H 3150 2100 50  0000 L CNN
+F 2 "catwsparts:CR2032-BS-6-1" V 3050 2160 50  0001 C CNN
+F 3 "" V 3050 2160 50  0001 C CNN
+	1    3050 2100
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:LED D1
+U 1 1 5C449CD4
+P 7050 4550
+F 0 "D1" H 7050 4650 50  0000 C CNN
+F 1 "LED" H 7050 4450 50  0000 C CNN
+F 2 "LEDs:LED_0603" H 7050 4550 50  0001 C CNN
+F 3 "" H 7050 4550 50  0001 C CNN
+	1    7050 4550
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:LED D2
+U 1 1 5C449DAA
+P 7050 4650
+F 0 "D2" H 7050 4750 50  0000 C CNN
+F 1 "LED" H 7050 4550 50  0000 C CNN
+F 2 "LEDs:LED_0603" H 7050 4650 50  0001 C CNN
+F 3 "" H 7050 4650 50  0001 C CNN
+	1    7050 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:LED D3
+U 1 1 5C449DDD
+P 7050 4750
+F 0 "D3" H 7050 4850 50  0000 C CNN
+F 1 "LED" H 7050 4650 50  0000 C CNN
+F 2 "LEDs:LED_0603" H 7050 4750 50  0001 C CNN
+F 3 "" H 7050 4750 50  0001 C CNN
+	1    7050 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:LED D4
+U 1 1 5C449E12
+P 7050 4850
+F 0 "D4" H 7050 4950 50  0000 C CNN
+F 1 "LED" H 7050 4750 50  0000 C CNN
+F 2 "LEDs:LED_0603" H 7050 4850 50  0001 C CNN
+F 3 "" H 7050 4850 50  0001 C CNN
+	1    7050 4850
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:LED D5
+U 1 1 5C449E47
+P 7050 4950
+F 0 "D5" H 7050 5050 50  0000 C CNN
+F 1 "LED" H 7050 4850 50  0000 C CNN
+F 2 "LEDs:LED_0603" H 7050 4950 50  0001 C CNN
+F 3 "" H 7050 4950 50  0001 C CNN
+	1    7050 4950
+	1    0    0    -1  
+$EndComp
+NoConn ~ 5900 3650
+NoConn ~ 5900 3450
+NoConn ~ 5900 2100
+NoConn ~ 5900 1850
+NoConn ~ 5900 1750
+NoConn ~ 5900 1650
+$Comp
+L catws-rescue:TEST_1P RESET1
+U 1 1 5C44A96A
+P 6000 3550
+F 0 "RESET1" H 6000 3820 50  0000 C CNN
+F 1 "TEST_1P" H 6000 3750 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 6200 3550 50  0001 C CNN
+F 3 "" H 6200 3550 50  0001 C CNN
+	1    6000 3550
+	0    1    1    0   
+$EndComp
+$Comp
+L catws-rescue:TEST_1P SCK1
+U 1 1 5C44AAD7
+P 6000 2600
+F 0 "SCK1" H 6000 2870 50  0000 C CNN
+F 1 "TEST_1P" H 6000 2800 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 6200 2600 50  0001 C CNN
+F 3 "" H 6200 2600 50  0001 C CNN
+	1    6000 2600
+	0    1    1    0   
+$EndComp
+$Comp
+L catws-rescue:TEST_1P MISO1
+U 1 1 5C44AB20
+P 6000 2500
+F 0 "MISO1" H 6000 2770 50  0000 C CNN
+F 1 "TEST_1P" H 6000 2700 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 6200 2500 50  0001 C CNN
+F 3 "" H 6200 2500 50  0001 C CNN
+	1    6000 2500
+	0    1    1    0   
+$EndComp
+$Comp
+L catws-rescue:TEST_1P MOSI1
+U 1 1 5C44AB69
+P 6000 2400
+F 0 "MOSI1" H 6000 2670 50  0000 C CNN
+F 1 "TEST_1P" H 6000 2600 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 6200 2400 50  0001 C CNN
+F 3 "" H 6200 2400 50  0001 C CNN
+	1    6000 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L catws-rescue:TEST_1P JV+1
+U 1 1 5C44AF17
+P 3250 1850
+F 0 "JV+1" H 3250 2120 50  0000 C CNN
+F 1 "TEST_1P" H 3250 2050 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 3450 1850 50  0001 C CNN
+F 3 "" H 3450 1850 50  0001 C CNN
+	1    3250 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:TEST_1P JV-1
+U 1 1 5C44AF62
+P 2900 2200
+F 0 "JV-1" H 2900 2470 50  0000 C CNN
+F 1 "TEST_1P" H 2900 2400 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Small" H 3100 2200 50  0001 C CNN
+F 3 "" H 3100 2200 50  0001 C CNN
+	1    2900 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG02
+U 1 1 5C44B8F3
+P 3800 1850
+F 0 "#FLG02" H 3800 1925 50  0001 C CNN
+F 1 "PWR_FLAG" H 3800 2000 50  0000 C CNN
+F 2 "" H 3800 1850 50  0001 C CNN
+F 3 "" H 3800 1850 50  0001 C CNN
+	1    3800 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:PWR_FLAG #FLG03
+U 1 1 5C44BB88
+P 3900 2150
+F 0 "#FLG03" H 3900 2225 50  0001 C CNN
+F 1 "PWR_FLAG" H 3900 2300 50  0000 C CNN
+F 2 "" H 3900 2150 50  0001 C CNN
+F 3 "" H 3900 2150 50  0001 C CNN
+	1    3900 2150
+	1    0    0    -1  
+$EndComp
+$Comp
+L catws-rescue:LED_ARGB D6
+U 1 1 5C44CC98
+P 6150 5300
+F 0 "D6" H 6150 5670 50  0000 C CNN
+F 1 "LED_ARGB" H 6150 4950 50  0000 C CNN
+F 2 "catwsparts:HQ12-2353RBGC" H 6150 5250 50  0001 C CNN
+F 3 "" H 6150 5250 50  0001 C CNN
+	1    6150 5300
+	0    1    1    0   
+$EndComp
+$Comp
+L catws-rescue:R_Pack04 RN2
+U 1 1 5C44D660
+P 6300 4000
+F 0 "RN2" V 6000 4000 50  0000 C CNN
+F 1 "R_Pack04" V 6500 4000 50  0000 C CNN
+F 2 "Resistors_SMD:R_Array_Concave_4x0603" V 6575 4000 50  0001 C CNN
+F 3 "" H 6300 4000 50  0001 C CNN
+	1    6300 4000
+	0    -1   1    0   
+$EndComp
+$Comp
+L catws-rescue:R_Pack04 RN1
+U 1 1 5C44D835
+P 6250 4750
+F 0 "RN1" V 5950 4750 50  0000 C CNN
+F 1 "R_Pack04" V 6450 4750 50  0000 C CNN
+F 2 "Resistors_SMD:R_Array_Concave_4x0603" V 6525 4750 50  0001 C CNN
+F 3 "" H 6250 4750 50  0001 C CNN
+	1    6250 4750
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	4000 1950 4000 1900
+Wire Wire Line
+	2650 1900 3050 1900
+Connection ~ 4000 1900
+Connection ~ 3650 1900
+Wire Wire Line
+	2900 2200 3050 2200
+Connection ~ 3650 2200
+Wire Wire Line
+	5900 2950 6500 2950
+Wire Wire Line
+	5900 3050 6650 3050
+Wire Wire Line
+	6650 3050 6650 2950
+Wire Wire Line
+	5900 3150 6800 3150
+Wire Wire Line
+	6800 3150 6800 2950
+Wire Wire Line
+	5900 3250 6950 3250
+Wire Wire Line
+	6950 3250 6950 2950
+Wire Wire Line
+	5900 3350 7100 3350
+Wire Wire Line
+	7100 3350 7100 2950
+Wire Wire Line
+	5900 2200 6650 2200
+Wire Wire Line
+	6650 2200 6650 1950
+Wire Wire Line
+	6650 1700 6800 1700
+Connection ~ 3450 2200
+Connection ~ 3450 1900
+Wire Wire Line
+	7300 4950 7200 4950
+Wire Wire Line
+	7300 4850 7200 4850
+Wire Wire Line
+	7300 4750 7200 4750
+Wire Wire Line
+	7200 4650 7300 4650
+Wire Wire Line
+	7200 4550 7300 4550
+Wire Wire Line
+	6000 2400 5900 2400
+Wire Wire Line
+	6000 2500 5900 2500
+Wire Wire Line
+	6000 2600 5900 2600
+Wire Wire Line
+	6000 3550 5900 3550
+Connection ~ 3050 2200
+Wire Wire Line
+	3250 1900 3250 1850
+Connection ~ 3250 1900
+Wire Wire Line
+	3800 1850 3800 1900
+Connection ~ 3800 1900
+Wire Wire Line
+	3900 2150 3900 2200
+Connection ~ 3900 2200
+Wire Wire Line
+	7300 5500 6150 5500
+Wire Wire Line
+	2650 5500 2650 1900
+Connection ~ 3050 1900
+Wire Wire Line
+	5950 5100 6050 5100
+Wire Wire Line
+	6050 5100 6050 4950
+Wire Wire Line
+	6150 5100 6150 4950
+Wire Wire Line
+	6350 5100 6250 5100
+Wire Wire Line
+	6250 5100 6250 4950
+Wire Wire Line
+	5900 4500 6050 4500
+Wire Wire Line
+	6050 4500 6050 4550
+Wire Wire Line
+	5900 4400 6150 4400
+Wire Wire Line
+	6150 4400 6150 4550
+Wire Wire Line
+	5900 4300 6250 4300
+Wire Wire Line
+	6250 4300 6250 4550
+Wire Wire Line
+	5900 3800 6100 3800
+Wire Wire Line
+	5900 3900 6100 3900
+Wire Wire Line
+	5900 4000 6100 4000
+Wire Wire Line
+	5900 4100 6100 4100
+Wire Wire Line
+	5900 4200 6350 4200
+Wire Wire Line
+	6350 4200 6350 4550
+Wire Wire Line
+	6350 4950 6900 4950
+Wire Wire Line
+	6900 4850 6500 4850
+Wire Wire Line
+	6500 4850 6500 4100
+Wire Wire Line
+	6900 4750 6600 4750
+Wire Wire Line
+	6600 4750 6600 4000
+Wire Wire Line
+	6600 4000 6500 4000
+Wire Wire Line
+	6900 4650 6700 4650
+Wire Wire Line
+	6700 4650 6700 3900
+Wire Wire Line
+	6700 3900 6500 3900
+Wire Wire Line
+	6900 4550 6800 4550
+Wire Wire Line
+	6800 4550 6800 3800
+Wire Wire Line
+	6800 3800 6500 3800
+Wire Wire Line
+	7300 4550 7300 4650
+Connection ~ 7300 4650
+Connection ~ 7300 4750
+Connection ~ 7300 4850
+Connection ~ 6150 5500
+Connection ~ 7300 4950
+Text Label 6150 2950 0    60   ~ 0
+T0
+Text Label 6150 3050 0    60   ~ 0
+T1
+Text Label 6150 3150 0    60   ~ 0
+T2
+Text Label 6150 3250 0    60   ~ 0
+T3
+Text Label 6150 3350 0    60   ~ 0
+T4
+Wire Wire Line
+	6800 1800 6800 2300
+Wire Wire Line
+	6800 2300 6700 2300
+$Comp
+L catws-rescue:C C3
+U 1 1 5C6006A5
+P 6700 2100
+F 0 "C3" H 6725 2200 50  0000 L CNN
+F 1 "C" H 6725 2000 50  0000 L CNN
+F 2 "Capacitors_SMD:C_0603" H 6738 1950 50  0001 C CNN
+F 3 "" H 6700 2100 50  0001 C CNN
+	1    6700 2100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 1950 6650 1950
+Connection ~ 6650 1950
+Wire Wire Line
+	6700 2250 6700 2300
+Connection ~ 6700 2300
+Wire Wire Line
+	3650 1900 3800 1900
+Wire Wire Line
+	3650 2200 3900 2200
+Wire Wire Line
+	3450 2200 3650 2200
+Wire Wire Line
+	3450 1900 3650 1900
+Wire Wire Line
+	3050 2200 3450 2200
+Wire Wire Line
+	3250 1900 3450 1900
+Wire Wire Line
+	3800 1900 4000 1900
+Wire Wire Line
+	3900 2200 4000 2200
+Wire Wire Line
+	3050 1900 3250 1900
+Wire Wire Line
+	7300 4650 7300 4750
+Wire Wire Line
+	7300 4750 7300 4850
+Wire Wire Line
+	7300 4850 7300 4950
+Wire Wire Line
+	6150 5500 2650 5500
+Wire Wire Line
+	7300 4950 7300 5500
+Wire Wire Line
+	6650 1950 6650 1700
+Wire Wire Line
+	6700 2300 5900 2300
+$Comp
+L catws-r2-rescue:BRCC064GWZ-3-Memory_EEPROM U2
+U 1 1 5C634D91
+P 8000 2550
+F 0 "U2" H 8000 2965 50  0000 C CNN
+F 1 "BRCC064GWZ-3" H 8000 2874 50  0000 C CNN
+F 2 "Package_CSP:WLCSP-6_1.4x1.0mm_P0.4mm" H 8000 2900 50  0001 C CNN
+F 3 "" H 8000 2550 50  0001 C CNN
+	1    8000 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6450 2550 7700 2550
+Wire Wire Line
+	7700 2450 6350 2450
+Wire Wire Line
+	4000 4500 4000 4600
+Connection ~ 4000 4500
+Connection ~ 4000 4400
+Wire Wire Line
+	4000 4400 4000 4500
+Wire Wire Line
+	4000 1900 4000 1650
+Wire Wire Line
+	4000 2200 4000 4400
+$Comp
+L catws-rescue:ATTINY88-MU U1
+U 1 1 5C42619A
+P 4950 3050
+F 0 "U1" H 4200 4600 50  0000 C CNN
+F 1 "ATTINY88-MU" H 5550 1450 50  0000 C CNN
+F 2 "Housings_DFN_QFN:QFN-32-1EP_5x5mm_Pitch0.5mm" H 4950 3050 50  0001 C CIN
+F 3 "" H 4950 3050 50  0001 C CNN
+	1    4950 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5900 1950 6350 1950
+Wire Wire Line
+	6350 1950 6350 1350
+Wire Wire Line
+	6350 1350 8300 1350
+Wire Wire Line
+	8300 2550 8500 2550
+Wire Wire Line
+	8500 2550 8500 2650
+$Comp
+L power:GND #PWR0101
+U 1 1 5C643328
+P 8500 3000
+F 0 "#PWR0101" H 8500 2750 50  0001 C CNN
+F 1 "GND" H 8505 2827 50  0000 C CNN
+F 2 "" H 8500 3000 50  0001 C CNN
+F 3 "" H 8500 3000 50  0001 C CNN
+	1    8500 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7700 2650 7700 2850
+Wire Wire Line
+	7700 2850 8500 2850
+Connection ~ 8500 2850
+Wire Wire Line
+	8500 2850 8500 3000
+Wire Wire Line
+	6350 2800 5900 2800
+Wire Wire Line
+	6350 2450 6350 2800
+Wire Wire Line
+	5900 2700 6450 2700
+Wire Wire Line
+	6450 2700 6450 2550
+Wire Wire Line
+	8300 2450 8300 1350
+Wire Wire Line
+	8300 2650 8500 2650
+Connection ~ 8500 2650
+Wire Wire Line
+	8500 2650 8500 2850
+$EndSCHEMATC
