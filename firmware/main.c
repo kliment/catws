@@ -15,8 +15,8 @@
 
 enum {tt_off=0,tt_on,tt_push,tt_release,tt_timeout};
 enum {pm_sleep=0, pm_wakeidle, pm_belly, pm_butt, pm_back, pm_neck, pm_head};
-#define touch_threshold_on 1
-#define touch_threshold_off 1
+#define touch_threshold_on 190
+#define touch_threshold_off 160
 #define touch_timeout 255
 
 uint16_t bias[5];
@@ -184,7 +184,8 @@ void audio_init(void){
 
     /* Overflow interrupt enabled */
     TIMSK1 = _BV(TOIE1);
-
+    TCCR1A |= _BV(COM1B1)|_BV(COM1B0);
+    OCR1B=OCR1A;
     increment = increments[increment_index];
 }
 
@@ -194,8 +195,13 @@ void audio_start(void) {
     
     /* Interrupt enabled */
     TIMSK1 = _BV(TOIE1);
+    OCR1B = !OCR1A;
+    DDRB|=_BV(PB1); //output pin to output
+    DDRB|=_BV(PB2); //output pin to output
+    
 }
-void audio_stop(void){ 
+void audio_stop(void){
+    
     /* Interrupt disabled */
     TIMSK1 &= ~_BV(TOIE1);
     /* Prescaler 0 -> no clock */
@@ -204,6 +210,10 @@ void audio_stop(void){
     TCNT1 = 0;
     phase = 0;
     OCR1A = 0;
+    OCR1B=0;
+    DDRB&=~_BV(PB1); //output pin to output
+    DDRB&=~_BV(PB2); //output pin to output
+    
 }
 ISR(TIMER1_OVF_vect) {
     int16_t val16;
@@ -306,6 +316,63 @@ void sleep()
     ADCSRA |=_BV(ADSC); // Wake up ADC by doing a conversion
 }
 
+#define SDAHIGH DDRB&=~_BV(PB6);PORTB|=_BV(PB6);
+#define SCLHIGH DDRB|=_BV(PB7);PORTB|=_BV(PB7);
+#define SDALOW PORTB&=~_BV(PB6);DDRB|=_BV(PB6);
+#define SCLLOW DDRB|=_BV(PB7);PORTB&=~_BV(PB7);
+#define I2CDELAY _delay_us(6);
+
+void i2cinit(){
+    //PB6 is SDA
+    //PB7 is SCL
+    //PA3 is power
+    DDRA|=_BV(PA3);
+    PORTA|=_BV(PA3);
+    SDAHIGH;
+    SCLHIGH;
+}
+
+void i2coff(){
+    //PB6 is SDA
+    //PB7 is SCL
+    //PA3 is power
+    SCLLOW;
+    DDRA&=~_BV(PA3);
+    PORTA&=~_BV(PA3);
+    SDALOW;
+    DDRB&=~(_BV(PB6)|_BV(PB7));
+    PORTB&=~(_BV(PB6)|_BV(PB7));
+}
+
+uint8_t i2ctest(uint8_t byte){
+    //start condition - pull SDA low
+    SDALOW;
+    I2CDELAY;
+    for(uint8_t i=8;i>0;i--){
+        SCLLOW;
+        if((byte>>(i-1))&1){
+            SDAHIGH;
+        }else{
+            SDALOW;
+        }
+        I2CDELAY;
+        SCLHIGH;
+    }
+    I2CDELAY;
+    SCLLOW;
+    I2CDELAY;
+    SCLHIGH;
+    I2CDELAY;
+    uint8_t ack=0;
+    if(PINB & _BV(PB6)){
+        ack=0;
+    }else{
+        ack=1;
+    }
+    return ack;
+}
+
+
 int main(void){
 #ifndef SENSEMODE_TIME
     PRR &=~_BV(PRADC);
@@ -317,7 +384,8 @@ int main(void){
     DDRD|=_BV(PD5); //output pin to output
     DDRD|=_BV(PD6); //output pin to output
     DDRD|=_BV(PD7); //output pin to output
-    DDRB=_BV(PB1); //output pin to output
+    DDRB|=_BV(PB1); //output pin to output
+    DDRB|=_BV(PB2); //output pin to output
     PORTD|=_BV(PD6);
     PORTD|=_BV(PD7);
         
@@ -332,6 +400,14 @@ int main(void){
         for(uint8_t j=0;j<5;j++)
             touch_sense(j);
     }
+    i2cinit();
+    DDRD|=_BV(1);
+    PORTD|=_BV(1);
+    if(i2ctest(0xa1)){
+        PORTD&=~_BV(1);
+    }
+    _delay_ms(600);
+    i2coff();
     
     audio_init();
     
@@ -349,7 +425,9 @@ int main(void){
                 PORTD|=_BV(i);
             }else if(res==tt_on){
                 PORTD&=~(_BV(i));
+                uint8_t prevmode=mode;
                 mode=pm_belly + i;
+                if(prevmode==pm_wakeidle || prevmode==pm_sleep)
                 switch(pm_belly + i) {
                 case pm_belly:
                     happiness=-1;
@@ -372,7 +450,7 @@ int main(void){
             if(happiness<0){
                 hiss();
             }else{
-                for(int j=0;j<5*happiness;j++){
+                for(int j=0;j<2*happiness;j++){
                     for(uint8_t i=0;i<5;i++){
                         DDRD|=_BV(i);
                         res=touch_sense(i);
@@ -426,10 +504,10 @@ int main(void){
                                     break;
                                 case pm_head: // Good while on head, bad against grain
                                     if(mode==pm_head){
-                                        happiness+=1;
+                                        //happiness+=1;
                                     }else if(mode==pm_neck){
-                                        test_hiss = 1;
-                                        happiness-=5;
+                                        //test_hiss = 1;
+                                        //happiness-=5;
                                     }
                                     break;
                             }
