@@ -1,6 +1,6 @@
 
 CC=avr-gcc
-CFLAGS=-mmcu=attiny88 -Os -std=c11 -g
+CFLAGS=-mmcu=attiny48 -Os -std=c11 -g
 
 
 build: main.c
@@ -10,11 +10,11 @@ build: main.c
 
 .PHONY: flash
 flash: build
-	avrdude -c usbtiny -p t88 -U flash:w:catws.hex:i -B5
+	avrdude -c usbtiny -p t48 -U flash:w:catws.hex:i -B3
 
 .PHONY: erase
 erase:
-	avrdude -c usbtiny -p t88 -e -B150
+	avrdude -c usbtiny -p t48 -e -B150
 .PHONY: clean
 
 clean:
